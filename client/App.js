@@ -4,6 +4,7 @@ import signOut from './actions/sign-out-user'
 import SignInOrUp from './containers/SignInOrUp'
 import Loader from './components/Loader'
 import FlatButton from 'material-ui/FlatButton'
+import Game from './containers/Game'
 
 class App extends Component {
   signOut() {
@@ -19,6 +20,7 @@ class App extends Component {
         { authenticated ?
           (<div>
             <h1>Hi, { currentUser.name }!</h1>
+            < Game />
             <p>
               <FlatButton
                 onClick={ this.signOut.bind(this) }
