@@ -2,14 +2,14 @@ import appLoading from './app-loading'
 import appDoneLoading from './app-done-loading'
 import axios from 'axios'
 
-export const HAVE_DECK = 'HAVE_DECK'
+export const DRAW_CARD = 'DRAW_CARD'
 
-export default function getDeckId() {
+export default function drawNewCard(deckID) {
   return dispatch => {
     dispatch(appLoading())
-    axios.get('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    axios.get('http://deckofcardsapi.com/api/deck/'+deckID+'/draw/?count=1')
         .then(response => {
-              dispatch(haveDeck(response.data))
+              dispatch(drawCard(response.data))
       })
       .catch(error => {
         console.log(error);
@@ -21,9 +21,9 @@ export default function getDeckId() {
 
 
 
-function haveDeck(deck) {
+function drawCard(card) {
   return {
-    type: HAVE_DECK,
-    payload: deck
+    type: DRAW_CARD,
+    payload: card
   }
 }
