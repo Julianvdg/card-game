@@ -10,7 +10,7 @@ class Card extends Component {
         <div>
         <p>hello</p>
           {this.props.value}
-          
+          <img src={this.props.img}/>
         </div>
       )
     }
