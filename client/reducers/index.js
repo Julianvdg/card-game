@@ -3,6 +3,7 @@ import currentUser from './currentUser'
 import formErrors from './formErrors'
 import loading from './loading'
 import deck from './deck'
+import currentCard from './currentCard'
 
 module.exports = {
   authenticated,
@@ -10,6 +11,7 @@ module.exports = {
   deck,
   formErrors,
   loading,
+  currentCard,
 }
 
 // {

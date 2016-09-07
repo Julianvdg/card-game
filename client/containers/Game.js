@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import Card from './Card'
 import getDeckId from '../actions/get-deck-id'
+import drawNewCard from '../actions/draw-card'
 
 
 class Game extends Component {
@@ -60,7 +61,8 @@ class Game extends Component {
         <div>
           <h1></h1>
           {this.props.deck.deck_id}
-          <button >Draw!</button>
+          <button onClick={() => this.props.drawNewCard(this.props.deck.deck_id)}>Draw!</button>
+          <p> {this.props.currentCard.remaining}</p>
         </div>
       )
     }
@@ -69,7 +71,8 @@ class Game extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    deck: state.deck
+    deck: state.deck,
+    currentCard: state.currentCard
   }
 }
 
@@ -77,4 +80,4 @@ Game.propTypes = {
   deck: PropTypes.object.isRequired
 }
 
-export default connect(mapStateToProps, { getDeckId } )(Game)
+export default connect(mapStateToProps, { getDeckId, drawNewCard} )(Game)
