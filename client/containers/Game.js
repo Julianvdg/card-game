@@ -57,22 +57,22 @@ class Game extends Component {
 
 
   render() {
-      return (
-        <div>
-          <h1></h1>
-          {this.props.deck.deck_id}
-          <button onClick={() => this.props.drawNewCard(this.props.deck.deck_id)}>Draw!</button>
-          <p> {this.props.currentCard.remaining}</p>
-        </div>
-      )
-    }
-
+    const { deck, currentCard } = this.props
+    return (
+      <div>
+        <h1>{deck.deck_id}</h1>
+        <button onClick={() => this.props.drawNewCard(deck.deck_id)}>Draw!</button>
+        <p> {currentCard.remaining}</p>
+        <img src={currentCard.image} />
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
     deck: state.deck,
-    currentCard: state.currentCard
+    currentCard: state.currentCard,
   }
 }
 
