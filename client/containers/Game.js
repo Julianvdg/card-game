@@ -1,12 +1,23 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import appLoading from '../actions//app-loading'
+import appDoneLoading from '../actions/app-done-loading'
 import Card from './Card'
 import getDeckId from '../actions/get-deck-id'
 import drawNewCard from '../actions/draw-card'
 
 
 class Game extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      dealerCards: [],
+      started: false
+    }
+  }
+
   componentDidMount() {
     this.props.getDeckId()
   }
@@ -45,7 +56,15 @@ class Game extends Component {
 //
 // }
 //
-firstCards(card, index) {
+renderCards(card, index) {
+  console.log(card)
+  return ( <Card key={ index }
+    { ...card } />
+
+  )
+}
+
+renderDCards(card, index) {
   return ( <Card key={ index }
     { ...card } />
 
@@ -56,12 +75,62 @@ firstCards(card, index) {
 //   return this.props.currentCard.map( (card) => ( {value: card.value} ))
 // }
 
-renderCard() {
+addToState(card) {
+  const dealerCards = this.state.dealerCards.concat([card])
+  this.setState({ dealerCards: dealerCards })
+}
+
+playerCards() {
   if (this.props.currentCard.length > 0)
-  return this.props.currentCard.map(this.firstCards.bind(this))
+  return this.props.currentCard.map(this.renderCards.bind(this))
+}
+
+makeCard(card) {
+
+    return Object.assign( card.cards[0] , { remaining: card.remaining } )
+}
+
+setDealerCards(deck_ID) {
+  const url = ('http://deckofcardsapi.com/api/deck/'+deck_ID+'/draw/?count=1')
+    axios.get(url)
+        .then(response => {
+
+              const newCard = this.makeCard(response.data)
+              this.addToState(newCard);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+}
+
+dealerCards() {
+  const { dealerCards } = this.state
+  if(dealerCards.length > 0)
+  return dealerCards.map(this.renderDCards.bind(this))
+}
+
+startGame() {
+  const { deck } = this.props;
+  this.props.drawNewCard(deck.deck_id);
+  this.setDealerCards(deck.deck_id);
+  this.setState({ started: true })
 
 }
 
+button() {
+  if(this.state.started == false) {
+  return <button onClick={() => this.startGame()}>Start game!</button>
+} else { return <button onClick={() => this.startGame()}>draw!</button>
+  }
+}
+
+count() {
+  if(this.props.currentCard > 0) {
+  const cards = this.props.currentCard;
+  let amount = 0;
+  return cards.map( card => { amount += card.points})
+  return amount }
+}
 
 
   render() {
@@ -69,12 +138,17 @@ renderCard() {
     return (
       <div>
         <h1>{deck.deck_id}</h1>
-        { this.renderCard() }
-        <button onClick={() => this.props.drawNewCard(deck.deck_id)}>Draw!</button>
+        { this.dealerCards() }
+        { this.playerCards() }
+        { this.button() }
+        {this.count() }
       </div>
     )
   }
 }
+
+
+
 
 const mapStateToProps = (state) => {
   return {
