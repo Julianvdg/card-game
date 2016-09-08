@@ -171,14 +171,11 @@ toggleStarted() {
   render() {
     const { deck } = this.props
     return (
-      <div>
-        <h1>{deck.deck_id}</h1>
-        { this.dealerCards() }
-        <div></div>
-        { this.playerCards() }
-        { this.button() }
-        { this.count() }
-
+      <div className="wrapper">
+      <h1>Welcome to Blackjack</h1>
+        <div className="cards">{ this.dealerCards() }</div>
+        <div className="controls">{ this.count() } { this.button() }</div>
+        <div className="cards">{ this.playerCards() }</div>
       </div>
     )
   }
