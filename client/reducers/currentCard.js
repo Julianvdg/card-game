@@ -20,7 +20,7 @@ function isInt(value) {
 }
 
 function points(card) {
-  if (card.value == "AC") {
+  if (card.value == "ACE") {
     return 11
   } else if (isInt(card.value)) {
     return parseInt(card.value)
