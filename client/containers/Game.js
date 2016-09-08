@@ -44,26 +44,33 @@ class Game extends Component {
 // });
 //
 // }
+//
+firstCards(card, index) {
+  return ( <Card key={ index }
+    { ...card } />
 
-// renderCard() {
-//   const {activeCard} = this.state
-//   return <Card
-//    value = {activeCard.value}
-//    img = {activeCard.image}
-//    />
+  )
+}
+
+// indexCards() {
+//   return this.props.currentCard.map( (card) => ( {value: card.value} ))
 // }
 
+renderCard() {
+  if (this.props.currentCard.length > 0)
+  return this.props.currentCard.map(this.firstCards.bind(this))
+
+}
 
 
 
   render() {
-    const { deck, currentCard } = this.props
+    const { deck } = this.props
     return (
       <div>
         <h1>{deck.deck_id}</h1>
+        { this.renderCard() }
         <button onClick={() => this.props.drawNewCard(deck.deck_id)}>Draw!</button>
-        <p> {currentCard.remaining}</p>
-        <img src={currentCard.image} />
       </div>
     )
   }
@@ -77,7 +84,7 @@ const mapStateToProps = (state) => {
 }
 
 Game.propTypes = {
-  deck: PropTypes.object.isRequired
+  deck: PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps, { getDeckId, drawNewCard} )(Game)
+export default connect(mapStateToProps, { getDeckId, drawNewCard } )(Game)
