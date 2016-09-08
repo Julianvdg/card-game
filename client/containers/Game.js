@@ -14,7 +14,8 @@ class Game extends Component {
     super()
     this.state = {
       dealerCards: [],
-      started: false
+      started: false,
+      count: 0
     }
   }
 
@@ -57,11 +58,10 @@ class Game extends Component {
 // }
 //
 renderCards(card, index) {
-  console.log(card)
   return ( <Card key={ index }
     { ...card } />
-
   )
+
 }
 
 renderDCards(card, index) {
@@ -86,8 +86,21 @@ playerCards() {
 }
 
 makeCard(card) {
+    console.log(card.cards[0])
+    const singleCard = card.cards[0]
+    return Object.assign( singleCard, { remaining: card.remaining , points: this.points(singleCard) } )
+}
 
-    return Object.assign( card.cards[0] , { remaining: card.remaining } )
+isInt(value) {
+  return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
+}
+
+points(card) {
+  if (card.value == "AC") {
+    return 11
+  } else if (this.isInt(card.value)) {
+    return parseInt(card.value)
+  } else { return 10 }
 }
 
 setDealerCards(deck_ID) {
@@ -101,6 +114,7 @@ setDealerCards(deck_ID) {
       .catch(error => {
         console.log(error);
       });
+
 }
 
 dealerCards() {
@@ -112,8 +126,8 @@ dealerCards() {
 startGame() {
   const { deck } = this.props;
   this.props.drawNewCard(deck.deck_id);
-  this.setDealerCards(deck.deck_id);
-  this.setState({ started: true })
+    this.setDealerCards(deck.deck_id);
+      this.setState({ started: true })
 
 }
 
@@ -125,11 +139,20 @@ button() {
 }
 
 count() {
-  if(this.props.currentCard > 0) {
-  const cards = this.props.currentCard;
-  let amount = 0;
-  return cards.map( card => { amount += card.points})
-  return amount }
+  let player = 0
+  let dealer = 0
+  this.props.currentCard.map( (card) => { player += card.points } )
+  this.state.dealerCards.map( (card) => { dealer += card.points } )
+  return this.renderScore(dealer,player)
+
+  // this.setState({
+  //   count: 5
+  // })
+}
+
+
+renderScore(dealer,player) {
+  return (<p>Dealer has {dealer}, You have {player}</p>)
 }
 
 
@@ -141,7 +164,7 @@ count() {
         { this.dealerCards() }
         { this.playerCards() }
         { this.button() }
-        {this.count() }
+        { this.count() }
       </div>
     )
   }

@@ -15,6 +15,7 @@ export default function drawNewCard(deckID) {
         console.log(error);
       });
       dispatch(appDoneLoading())
+
     }
   }
 
