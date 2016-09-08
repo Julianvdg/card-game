@@ -144,11 +144,21 @@ count() {
   let dealer = 0
   this.props.currentCard.map( (card) => { player += card.points } )
   this.state.dealerCards.map( (card) => { dealer += card.points } )
+  if(this.props.currentCard.length == 2 && player == 21) {
+    return
+    this.blackJack();
+    this.toggleStarted()
+  } else if (player == 21) {
   return this.renderScore(dealer,player)
+  }
 
   // this.setState({
   //   count: 5
   // })
+}
+blackJack() {
+  return (
+    <p>BLACKJACK! You are great.</p>)
 }
 
 renderScore(dealer,player) {
