@@ -5,8 +5,9 @@ export default function updateCurrentCard(state = [], { type, payload }) {
   switch (type) {
     case DRAW_CARD :
     const { cards } = payload
-      return cards
-      .map((card) => Object.assign( card , { remaining: payload.remaining, points: points(card), deck_id: payload.deck_id }))
+      const newCards = cards
+      .map((card) => Object.assign( card , { remaining: payload.remaining, points: points(card) }))
+      return state.concat(newCards)
 
 
     default :

@@ -6,7 +6,7 @@ import appDoneLoading from '../actions/app-done-loading'
 import Card from './Card'
 import getDeckId from '../actions/get-deck-id'
 import drawNewCard from '../actions/draw-card'
-
+import drawOne from '../actions/draw-one'
 
 class Game extends Component {
 
@@ -15,7 +15,7 @@ class Game extends Component {
     this.state = {
       dealerCards: [],
       started: false,
-      count: 0
+      message: "Ready to play?",
     }
   }
 
@@ -132,9 +132,10 @@ startGame() {
 }
 
 button() {
+  const { deck } = this.props;
   if(this.state.started == false) {
   return <button onClick={() => this.startGame()}>Start game!</button>
-} else { return <button onClick={() => this.startGame()}>draw!</button>
+} else { return <button onClick={() => this.props.drawOne(deck.deck_id)}>draw!</button>
   }
 }
 
@@ -150,10 +151,21 @@ count() {
   // })
 }
 
-
 renderScore(dealer,player) {
-  return (<p>Dealer has {dealer}, You have {player}</p>)
+  if (player > 21) {
+  return (
+    <p>You have {player}, BUSTED!</p>)
+} else {
+  return (<p>Dealer has {dealer}, You have {player}</p>) }
 }
+
+toggleStarted() {
+  this.setState({
+    started: !this.state.started
+  })
+}
+
+
 
 
   render() {
@@ -162,9 +174,11 @@ renderScore(dealer,player) {
       <div>
         <h1>{deck.deck_id}</h1>
         { this.dealerCards() }
+        <div></div>
         { this.playerCards() }
         { this.button() }
         { this.count() }
+
       </div>
     )
   }
@@ -184,4 +198,4 @@ Game.propTypes = {
   deck: PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps, { getDeckId, drawNewCard } )(Game)
+export default connect(mapStateToProps, { getDeckId, drawNewCard, drawOne } )(Game)
