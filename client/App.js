@@ -20,12 +20,13 @@ class App extends Component {
         { authenticated ?
           (<div>
             <h1>Hi, { currentUser.name }!</h1>
-            < Game />
-            <p>
+            <span>
               <FlatButton
                 onClick={ this.signOut.bind(this) }
                 label="Sign out"/>
-            </p>
+            </span>
+            < Game />
+
           </div>) :
             <SignInOrUp/> }
       </div>
