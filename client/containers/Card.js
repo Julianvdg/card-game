@@ -7,11 +7,7 @@ class Card extends Component {
 
   render() {
       return (
-        <div>
-        <p>hello</p>
-          {this.props.value}
-          <img src={this.props.img}/>
-        </div>
+        <img src={this.props.image}/>
       )
     }
 

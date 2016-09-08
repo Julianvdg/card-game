@@ -7,7 +7,7 @@ export const DRAW_CARD = 'DRAW_CARD'
 export default function drawNewCard(deckID) {
   return dispatch => {
     dispatch(appLoading())
-    axios.get('http://deckofcardsapi.com/api/deck/'+deckID+'/draw/?count=1')
+    axios.get('http://deckofcardsapi.com/api/deck/'+deckID+'/draw/?count=2')
         .then(response => {
               dispatch(drawCard(response.data))
       })
