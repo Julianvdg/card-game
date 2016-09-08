@@ -7,16 +7,15 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import ChatTheme from './styles/base-theme';
-import createLogger from 'redux-logger';
 
 
 import * as reducers from './reducers';
 
-const logger = createLogger();
+
 const reducer = combineReducers(reducers);
 const devTools = window.devToolsExtension ? window.devToolsExtension() : f => f;
 const enhancer = compose(
-  applyMiddleware(ReduxThunk,logger),
+  applyMiddleware(ReduxThunk),
   devTools
 );
 
